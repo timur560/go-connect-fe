@@ -53,7 +53,7 @@ export const IntroModal = () => {
       >
         <Carousel>
           <div>
-            <Title style={{ color: "white" }}>Welcome to Go-Connect!</Title>
+            <Title style={{ color: "white" }}>Welcome to "Play Go Alive"!</Title>
             <Paragraph style={{ fontSize: 18, paddingBottom: 30, color: 'white' }}>
               Let me introduce a service that allows you to play live games
               and provide tips for using the service most effectively.
@@ -94,7 +94,7 @@ export const IntroModal = () => {
           <div>
             <Title style={{ color: "white" }}>Let's get started!</Title>
             <Paragraph style={{ fontSize: 18, paddingBottom: 30, color: 'white' }}>
-              I hope you'll be happy using Go-Connect!
+              I hope you'll be happy using "Play Go Alive"!
             </Paragraph>
             <div style={{ width: '100%', display: 'flex', justifyContent: 'center'}}>
               <Image preview={false} height={90} src="/images/go.png" />
