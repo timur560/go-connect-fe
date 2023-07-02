@@ -4,10 +4,10 @@ export const MIN_WIDTH = 500;
 
 export const CONTAINER_STYLE = {
   width: '100%',
-  height: '100vh',
+  height: '100svh',
 };
 
 export const CONTAINER_STYLE_MOBILE = {
   width: '100%',
-  height: 'calc(100vh - 50px)',
+  height: 'calc(100svh - 50px)',
 };

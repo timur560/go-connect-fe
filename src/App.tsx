@@ -451,7 +451,7 @@ const App = () => {
           <div className="mobile-container">
             {currentTab === 'list' && renderRequestsList()}
             {isLoaded && renderMap()}
-            {currentTab === 'chat' && <div style={{padding: 10, height: '100vh'}}>{renderChatPanel()}</div>}
+            {currentTab === 'chat' && <div style={{padding: 10, height: '100svh'}}>{renderChatPanel()}</div>}
           </div>
           <TabBar activeKey={currentTab} onChange={(key) => {
             setCurrentTab(key);
