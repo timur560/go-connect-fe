@@ -24,5 +24,5 @@ export type GameRequest = {
   description?: string;
   comment?: string;
   createdAt?: any;
-  attachments: string[];
+  attachments?: string[] | undefined;
 };

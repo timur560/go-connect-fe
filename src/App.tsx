@@ -238,11 +238,6 @@ const App = () => {
   };
 
   const handleSubmitRequest = (values: any) => {
-
-    console.log(values);
-
-    
-    // TODO: add a type
     if (wsClient.current) {
       const request = {
         id: wsId,
@@ -256,7 +251,7 @@ const App = () => {
           request,
         })
       );
-      localStorage.setItem('request', JSON.stringify(request));
+      localStorage.setItem('request', JSON.stringify({ ...request, attachments: [] } as GameRequest));
       localStorage.setItem('name', values.name);
     }
     setRequestModalOpen(false);

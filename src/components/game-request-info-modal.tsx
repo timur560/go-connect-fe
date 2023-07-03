@@ -67,9 +67,8 @@ export const GameRequestInfoModal = ({
         </Descriptions.Item>
       </Descriptions>
 
-      <Divider />
-
-      {request?.attachments?.length && (
+      {request?.attachments?.length ? <>
+        <Divider />
         <Image.PreviewGroup>
           <Space size="large" wrap align="center">
             {request.attachments.map((src) => (
@@ -77,7 +76,7 @@ export const GameRequestInfoModal = ({
             ))}
           </Space>
         </Image.PreviewGroup>
-      )}
+      </> : null}
     </Modal>
   );
 };
