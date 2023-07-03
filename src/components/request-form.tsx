@@ -1,9 +1,10 @@
-import { QuestionCircleFilled } from '@ant-design/icons';
+import { PlusOutlined, QuestionCircleFilled } from '@ant-design/icons';
 import {
   Button,
   Col,
   Divider,
   Form,
+  Image,
   Input,
   InputNumber,
   Modal,
@@ -11,11 +12,24 @@ import {
   Select,
   Space,
   Tooltip,
+  Upload,
+  UploadFile,
 } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
+import { RcFile, UploadProps } from 'antd/es/upload';
 import { RANK_OPTIONS } from 'data/rank-options';
 import { degToDms } from 'helpers/helper';
+import { useState } from 'react';
 import { GameSetLabel } from 'types/game-request.type';
+
+const getBase64 = (file: RcFile): Promise<string> =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = (error) => reject(error);
+  });
+
 
 type RequestFormProps = {
   open?: boolean;
@@ -30,12 +44,32 @@ export const RequestForm = ({
   onCancel = () => {},
   position,
 }: RequestFormProps) => {
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const [previewImage, setPreviewImage] = useState('');
+  const [previewTitle, setPreviewTitle] = useState('');
+  const [fileList, setFileList] = useState<UploadFile[]>([])
+
+  const handleCancel = () => setPreviewOpen(false);
+
+  const handlePreview = async (file: UploadFile) => {
+    if (!file.url && !file.preview) {
+      file.preview = await getBase64(file.originFileObj as RcFile);
+    }
+    setPreviewImage(file.url || (file.preview as string));
+    setPreviewOpen(true);
+    setPreviewTitle(file.name || file.url!.substring(file.url!.lastIndexOf('/') + 1));
+  };
+
+  const handleChange: UploadProps['onChange'] = ({ fileList: newFileList }) =>
+    setFileList(newFileList);
+
   return (
     <Modal
       title="Place a new live game request"
       open={open}
       footer={false}
       onCancel={onCancel}
+      width={600}
     >
       <div>
         Game place coord: {degToDms(position.lat)}N {degToDms(position.lng)}E
@@ -43,7 +77,12 @@ export const RequestForm = ({
       <Divider />
       <Form
         labelCol={{ span: 8 }}
-        onFinish={onSubmit}
+        onFinish={async (values) => {
+          onSubmit({
+            ...values,
+            attachments: await Promise.all(fileList.map((f) => getBase64(f.originFileObj as RcFile))),
+          })}
+        }
         initialValues={
           localStorage.getItem('request')
             ? JSON.parse(`${localStorage.getItem('request')}`)
@@ -163,6 +202,24 @@ export const RequestForm = ({
             </Tooltip>
           </Col>
         </Row>
+        <Form.Item
+          label="Images"
+          help="Attach some photos of your game set, place, etc."
+        >
+          <Upload
+            listType="picture-card"
+            fileList={fileList}
+            onPreview={handlePreview}
+            onChange={handleChange}
+            beforeUpload={() => false}
+            accept="image/*"
+          >
+            {fileList.length < 3 && <div>
+              <PlusOutlined />
+              <div style={{ marginTop: 8 }}>Upload</div>
+            </div>}
+          </Upload>
+        </Form.Item>
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
           <Space>
             <Button htmlType="button" onClick={onCancel}>
@@ -174,6 +231,9 @@ export const RequestForm = ({
           </Space>
         </Form.Item>
       </Form>
+      <Modal open={previewOpen} title={previewTitle} footer={null} onCancel={handleCancel}>
+        <img alt="example" style={{ width: '100%' }} src={previewImage} />
+      </Modal>
     </Modal>
   );
-};
+}

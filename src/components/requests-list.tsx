@@ -1,4 +1,5 @@
 import { Avatar, Empty, List } from 'antd';
+import moment from 'moment';
 import { GameRequest, GameSet } from 'types/game-request.type';
 
 type RequestsListProps = {
@@ -27,7 +28,15 @@ export const RequestsList = (props: RequestsListProps) => {
     <List
       size="small"
       style={{ flexGrow: 1 }}
-      dataSource={Object.entries(props.items)}
+      dataSource={Object.entries(props.items).sort((prev, next) => {
+        if (moment(prev[1].createdAt).isBefore(moment(next[1].createdAt))) {
+          return 1;
+        }
+        if (moment(prev[1].createdAt).isAfter(moment(next[1].createdAt))) {
+          return -1;
+        }
+        return 0;
+      })}
       renderItem={(item) => (
         <List.Item
           onClick={() => props.onClick(item[1].id)}
@@ -51,14 +60,14 @@ export const RequestsList = (props: RequestsListProps) => {
                 shape="square"
               />
             }
-            title={item[1].name}
-            description={`${item[1].rank}, ${
+            title={`${item[1].name} [${item[1].rank}]`}
+            description={`${
               item[1].gameSet === GameSet.STANDART
                 ? 'Big game set'
                 : item[1].gameSet === GameSet.SMALL
                 ? 'Small game set'
                 : 'No game set'
-            }`}
+            }, ${moment.duration(moment(item[1].createdAt).diff(moment())).humanize(true)}`}
           />
           {/* {item[1].name} <Tag>{item[1].rank}</Tag>{' '}
           {item[1].gameSet === GameSet.STANDART && (

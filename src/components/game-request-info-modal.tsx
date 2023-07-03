@@ -1,4 +1,4 @@
-import { Button, Descriptions, Modal } from 'antd';
+import { Button, Descriptions, Divider, Image, Modal, Space } from 'antd';
 import { GameRequest, GameSetLabel } from 'types/game-request.type';
 
 type GameRequestInfoModalProps = {
@@ -66,6 +66,18 @@ export const GameRequestInfoModal = ({
           {request.comment || '-'}
         </Descriptions.Item>
       </Descriptions>
+
+      <Divider />
+
+      {request?.attachments?.length && (
+        <Image.PreviewGroup>
+          <Space size="large" wrap align="center">
+            {request.attachments.map((src) => (
+              <Image src={src} width={140} />
+            ))}
+          </Space>
+        </Image.PreviewGroup>
+      )}
     </Modal>
   );
 };

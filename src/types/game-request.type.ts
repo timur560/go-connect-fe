@@ -23,4 +23,6 @@ export type GameRequest = {
   gameSet: GameSet;
   description?: string;
   comment?: string;
+  createdAt?: any;
+  attachments: string[];
 };

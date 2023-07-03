@@ -238,6 +238,10 @@ const App = () => {
   };
 
   const handleSubmitRequest = (values: any) => {
+
+    console.log(values);
+
+    
     // TODO: add a type
     if (wsClient.current) {
       const request = {
@@ -323,7 +327,6 @@ const App = () => {
               setGameRequestInfoPopupVisible(true);
               setRequestsListPanelOpen(false);
               setChatPanelOpen(false);
-              setCurrentTab('chat');
             }}
             label={{
               text: `${request[1].name} [${request[1].rank}]`,
@@ -332,7 +335,7 @@ const App = () => {
           />
         ))}
       </GoogleMap>
-      {isPointerVisible && (
+      {currentTab === 'map' && isPointerVisible && (
         <div className="picker">
           <p style={{ textAlign: 'center' }}>
             Choose location for the game
