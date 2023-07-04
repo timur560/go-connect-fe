@@ -330,7 +330,7 @@ const App = () => {
           />
         ))}
       </GoogleMap>
-      {currentTab === 'map' && isPointerVisible && (
+      {(currentTab === 'map' || width > MIN_WIDTH) && isPointerVisible && (
         <div className="picker">
           <p style={{ textAlign: 'center' }}>
             Choose location for the game
