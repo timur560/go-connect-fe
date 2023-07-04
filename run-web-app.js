@@ -4,7 +4,7 @@ const fs = require('fs');
 const https = require('https');
 require('dotenv').config({ path: `${__dirname}/.env` });
 
-const BUILD_PATH = '/home/ubuntu/opf_admin/build';
+const BUILD_PATH = '/home/ubuntu/go-connect-web/build';
 
 const options = {
   key: fs.readFileSync(process.env.KEY_PATH),
